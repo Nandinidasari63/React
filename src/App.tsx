@@ -1,52 +1,35 @@
 import { useReducer, useState } from "react";
 import "./App.css";
-type Task = {
+import { reducer, type TaskProps, type TodoListProps } from "./TodoReducer.tsx";
+
+export type Task = {
   id: number;
   title: string;
   isDone: boolean;
 };
 
-type Todo = {
-  nextId: number;
-  tasks: Task[];
-};
-
-type TodoListProps = {
-  todoList: Todo;
-  dispatch: React.Dispatch<Action>;
-};
-
-type Action =
-  | { type: "add-task"; title: string }
-  | { type: "delete-task"; taskId: number }
-  | { type: "toggle-done"; taskId: number };
-
-const reducer = (todoList: Todo, action: Action) => {
-  switch (action.type) {
-    case "add-task":
-      return {
-        nextId: todoList.nextId + 1,
-        tasks: [...todoList.tasks, {
-          id: todoList.nextId,
-          title: action.title,
-          isDone: false,
-        }],
-      };
-    case "delete-task":
-      return {
-        nextId: todoList.nextId + 1,
-        tasks: todoList.tasks.filter((task) => task.id !== action.taskId),
-      };
-
-    case "toggle-done":
-      return {
-        nextId: todoList.nextId + 1,
-        tasks: todoList.tasks.map((task) =>
-          task.id !== action.taskId ? task : { ...task, isDone: !task.isDone }
-        ),
-      };
-  }
-  return todoList;
+export const Task = ({ id, title, isDone, dispatch }: TaskProps) => {
+  return (
+    <li
+      key={id}
+      onClick={(e) => {
+        e.stopPropagation();
+        dispatch({ type: "toggle-done", taskId: id });
+      }}
+    >
+      {id} : {title}
+      <span>{isDone ? "✅" : "❌"}</span>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          dispatch({ type: "delete-task", taskId: id });
+        }}
+      >
+        delete
+      </button>
+    </li>
+  );
 };
 
 const TodoList = (
@@ -58,25 +41,13 @@ const TodoList = (
     <>
       <ul>
         {todoList.tasks.map(({ id, title, isDone }) => (
-          <li
+          <Task
             key={id}
-            onClick={(e) => {
-              e.stopPropagation();
-              dispatch({ type: "toggle-done", taskId: id });
-            }}
-          >
-            {id} : {title}
-            <span>{isDone ? "✅" : "❌"}</span>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                dispatch({ type: "delete-task", taskId: id });
-              }}
-            >
-              delete
-            </button>
-          </li>
+            id={id}
+            isDone={isDone}
+            title={title}
+            dispatch={dispatch}
+          />
         ))}
       </ul>
       <form
@@ -98,7 +69,6 @@ const TodoList = (
 };
 
 const App = () => {
-  // const [todoList, setTodoList] = useState<Todo>({ nextId: 1, tasks: [] });
   const [todoList, dispatch] = useReducer(reducer, {
     nextId: 1,
     tasks: [],
