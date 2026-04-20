@@ -1,5 +1,4 @@
 import type { Task } from "./App.tsx";
-import { produce } from "immer";
 
 type Todo = {
   nextId: number;
@@ -57,7 +56,7 @@ export type TaskProps = {
 //   return todoList;
 // };
 
-export const reducer = produce((draft: Todo, action: Action) => {
+export const reducer = (draft: Todo, action: Action) => {
   switch (action.type) {
     case ActionTypes.ADD_TASK:
       draft.tasks.push({
@@ -84,4 +83,4 @@ export const reducer = produce((draft: Todo, action: Action) => {
       break;
     }
   }
-});
+};

@@ -1,4 +1,6 @@
-import { useReducer, useState } from "react";
+import { useState } from "react";
+import { useImmerReducer } from "use-immer";
+
 import "./App.css";
 import {
   ActionTypes,
@@ -74,7 +76,7 @@ const TodoList = (
 };
 
 const App = () => {
-  const [todoList, dispatch] = useReducer(reducer, {
+  const [todoList, dispatch] = useImmerReducer(reducer, {
     nextId: 1,
     tasks: [],
   });
