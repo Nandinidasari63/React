@@ -1,6 +1,11 @@
 import { useReducer, useState } from "react";
 import "./App.css";
-import { reducer, type TaskProps, type TodoListProps } from "./TodoReducer.tsx";
+import {
+  ActionTypes,
+  reducer,
+  type TaskProps,
+  type TodoListProps,
+} from "./TodoReducer.tsx";
 
 export type Task = {
   id: number;
@@ -14,7 +19,7 @@ export const Task = ({ id, title, isDone, dispatch }: TaskProps) => {
       key={id}
       onClick={(e) => {
         e.stopPropagation();
-        dispatch({ type: "toggle-done", taskId: id });
+        dispatch({ type: ActionTypes.TOGGLE_DONE, taskId: id });
       }}
     >
       {id} : {title}
@@ -23,7 +28,7 @@ export const Task = ({ id, title, isDone, dispatch }: TaskProps) => {
         type="button"
         onClick={(e) => {
           e.stopPropagation();
-          dispatch({ type: "delete-task", taskId: id });
+          dispatch({ type: ActionTypes.DELETE_TASK, taskId: id });
         }}
       >
         delete
@@ -53,7 +58,7 @@ const TodoList = (
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          dispatch({ type: "add-task", title: text });
+          dispatch({ type: ActionTypes.ADD_TASK, title: text });
           setText("");
         }}
       >
