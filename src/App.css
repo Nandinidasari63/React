@@ -1,0 +1,25 @@
+input {
+  width: 300px;
+  padding: 8px;
+  font-size: 16px;
+  margin: 20px;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid #ccc;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px;
+  width: 300px;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  font-size: 16px;
+  border-bottom: 1px solid #ddd;
+}
