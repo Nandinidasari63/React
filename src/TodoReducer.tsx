@@ -5,11 +5,6 @@ type Todo = {
   tasks: Task[];
 };
 
-export type TodoListProps = {
-  todoList: Todo;
-  dispatch: React.Dispatch<Action>;
-};
-
 export enum ActionTypes {
   ADD_TASK,
   DELETE_TASK,
@@ -25,36 +20,7 @@ export type TaskProps = {
   id: number;
   title: string;
   isDone: boolean;
-  dispatch: React.Dispatch<Action>;
 };
-
-// export const reducer = (todoList: Todo, action: Action) => {
-//   switch (action.type) {
-//     case ActionTypes.ADD_TASK:
-//       return {
-//         nextId: todoList.nextId + 1,
-//         tasks: [...todoList.tasks, {
-//           id: todoList.nextId,
-//           title: action.title,
-//           isDone: false,
-//         }],
-//       };
-//     case ActionTypes.DELETE_TASK:
-//       return {
-//         nextId: todoList.nextId + 1,
-//         tasks: todoList.tasks.filter((task) => task.id !== action.taskId),
-//       };
-
-//     case ActionTypes.TOGGLE_DONE:
-//       return {
-//         nextId: todoList.nextId + 1,
-//         tasks: todoList.tasks.map((task) =>
-//           task.id !== action.taskId ? task : { ...task, isDone: !task.isDone }
-//         ),
-//       };
-//   }
-//   return todoList;
-// };
 
 export const reducer = (draft: Todo, action: Action) => {
   switch (action.type) {

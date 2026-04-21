@@ -1,13 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useImmerReducer } from "use-immer";
-
+import { TodoContext, TodoDispatchContext } from "./context.tsx";
 import "./App.css";
-import {
-  ActionTypes,
-  reducer,
-  type TaskProps,
-  type TodoListProps,
-} from "./TodoReducer.tsx";
+import { ActionTypes, reducer, type TaskProps } from "./TodoReducer.tsx";
 
 export type Task = {
   id: number;
@@ -15,7 +10,8 @@ export type Task = {
   isDone: boolean;
 };
 
-export const Task = ({ id, title, isDone, dispatch }: TaskProps) => {
+export const Task = ({ id, title, isDone }: TaskProps) => {
+  const dispatch = useContext(TodoDispatchContext);
   return (
     <li
       key={id}
@@ -39,10 +35,10 @@ export const Task = ({ id, title, isDone, dispatch }: TaskProps) => {
   );
 };
 
-const TodoList = (
-  { todoList, dispatch }: TodoListProps,
-) => {
+const TodoList = () => {
   const [text, setText] = useState("");
+  const todoList = useContext(TodoContext);
+  const dispatch = useContext(TodoDispatchContext);
 
   return (
     <>
@@ -53,7 +49,6 @@ const TodoList = (
             id={id}
             isDone={isDone}
             title={title}
-            dispatch={dispatch}
           />
         ))}
       </ul>
@@ -82,10 +77,11 @@ const App = () => {
   });
   return (
     <>
-      <TodoList
-        todoList={todoList}
-        dispatch={dispatch}
-      />
+      <TodoContext value={todoList}>
+        <TodoDispatchContext value={dispatch}>
+          <TodoList />
+        </TodoDispatchContext>
+      </TodoContext>
     </>
   );
 };
